@@ -15,6 +15,17 @@ go test ./...
 go run ./cmd/vanguard
 ```
 
+Run the admin UI in a second terminal:
+
+```sh
+cd web
+npm install
+npm run dev
+```
+
+The UI is available at `http://localhost:5173` and proxies API requests to
+Vanguard at `http://localhost:8080`.
+
 The server listens on `:8080` by default and exposes:
 
 - `GET /healthz` — process health

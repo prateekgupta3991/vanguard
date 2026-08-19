@@ -28,3 +28,7 @@ replay_pid*
 /vanguard
 *.test
 coverage.out
+
+# Web build artifacts
+/web/node_modules/
+/web/dist/
