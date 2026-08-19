@@ -12,11 +12,16 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/prateekgupta3991/vanguard/internal/config"
-	apihttp "github.com/prateekgupta3991/vanguard/internal/http"
+	"github.com/prateekgupta3991/vanguard/internal/handler"
+	"github.com/prateekgupta3991/vanguard/internal/repository"
+	"github.com/prateekgupta3991/vanguard/internal/services"
 )
 
+// main composes Vanguard's dependencies and runs the HTTP server.
 func main() {
-	logger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
+	logger := slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{
+		Level: slog.LevelInfo,
+	}))
 
 	cfg, err := config.Load()
 	if err != nil {
@@ -25,9 +30,11 @@ func main() {
 	}
 
 	gin.SetMode(gin.ReleaseMode)
+	agentRepository := repository.NewMemoryRepository()
+	agentService := services.NewAgentService(agentRepository)
 	server := &http.Server{
 		Addr:              cfg.HTTPAddress,
-		Handler:           apihttp.NewHandler(),
+		Handler:           handler.NewHandler(agentService, logger),
 		ReadHeaderTimeout: 5 * time.Second,
 		ReadTimeout:       15 * time.Second,
 		WriteTimeout:      30 * time.Second,

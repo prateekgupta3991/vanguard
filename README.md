@@ -19,6 +19,9 @@ The server listens on `:8080` by default and exposes:
 
 - `GET /healthz` — process health
 - `GET /readyz` — service readiness
+- `POST /api/v1/agents` — register an agent or refresh an existing registration
+- `GET /api/v1/agents` — list registered agents
+- `GET /api/v1/agents/:agentId` — retrieve a registered agent
 
 Configuration is provided through environment variables:
 

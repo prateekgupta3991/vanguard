@@ -1,4 +1,4 @@
-package http
+package handler
 
 import (
 	"net/http"
@@ -18,7 +18,7 @@ func TestStatusEndpoints(t *testing.T) {
 			request := httptest.NewRequest(http.MethodGet, path, nil)
 			response := httptest.NewRecorder()
 
-			NewHandler().ServeHTTP(response, request)
+			newTestHandler().ServeHTTP(response, request)
 
 			if response.Code != http.StatusOK {
 				t.Fatalf("status = %d, want %d", response.Code, http.StatusOK)
@@ -37,7 +37,7 @@ func TestStatusEndpointRejectsUnsupportedMethod(t *testing.T) {
 	request := httptest.NewRequest(http.MethodPost, "/healthz", nil)
 	response := httptest.NewRecorder()
 
-	NewHandler().ServeHTTP(response, request)
+	newTestHandler().ServeHTTP(response, request)
 
 	if response.Code != http.StatusMethodNotAllowed {
 		t.Fatalf("status = %d, want %d", response.Code, http.StatusMethodNotAllowed)

@@ -11,11 +11,13 @@ const (
 	defaultShutdownTimeout = 10 * time.Second
 )
 
+// Config contains runtime configuration for the Vanguard server.
 type Config struct {
 	HTTPAddress     string
 	ShutdownTimeout time.Duration
 }
 
+// Load reads and validates configuration from environment variables.
 func Load() (Config, error) {
 	cfg := Config{
 		HTTPAddress:     valueOrDefault("VANGUARD_HTTP_ADDRESS", defaultHTTPAddress),
@@ -36,6 +38,7 @@ func Load() (Config, error) {
 	return cfg, nil
 }
 
+// valueOrDefault returns an environment value or its fallback.
 func valueOrDefault(key, fallback string) string {
 	if value := os.Getenv(key); value != "" {
 		return value
