@@ -13,8 +13,8 @@ func TestLoadDefaults(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Load() error = %v", err)
 	}
-	if cfg.HTTPAddress != ":8080" {
-		t.Fatalf("HTTPAddress = %q, want %q", cfg.HTTPAddress, ":8080")
+	if cfg.HTTPAddress != ":8081" {
+		t.Fatalf("HTTPAddress = %q, want %q", cfg.HTTPAddress, ":8081")
 	}
 	if cfg.ShutdownTimeout != 10*time.Second {
 		t.Fatalf("ShutdownTimeout = %v, want %v", cfg.ShutdownTimeout, 10*time.Second)
