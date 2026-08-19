@@ -15,7 +15,7 @@ import (
 )
 
 func TestAgentRegistrationLifecycle(t *testing.T) {
-	handler := newTestHandler()
+	handler := newTestRouter()
 
 	created := performRequest(t, handler, http.MethodPost, "/api/v1/agents", `{
 		"identifier":"codex:developer-laptop",
@@ -69,7 +69,7 @@ func TestAgentRegistrationLifecycle(t *testing.T) {
 }
 
 func TestRegisterAgentRejectsInvalidRequest(t *testing.T) {
-	response := performRequest(t, newTestHandler(), http.MethodPost, "/api/v1/agents", `{"name":"Codex"}`)
+	response := performRequest(t, newTestRouter(), http.MethodPost, "/api/v1/agents", `{"name":"Codex"}`)
 	if response.Code != http.StatusBadRequest {
 		t.Fatalf("status = %d, want %d", response.Code, http.StatusBadRequest)
 	}
@@ -84,16 +84,16 @@ func TestRegisterAgentRejectsInvalidRequest(t *testing.T) {
 }
 
 func TestGetAgentReturnsNotFound(t *testing.T) {
-	response := performRequest(t, newTestHandler(), http.MethodGet, "/api/v1/agents/unknown", "")
+	response := performRequest(t, newTestRouter(), http.MethodGet, "/api/v1/agents/unknown", "")
 	if response.Code != http.StatusNotFound {
 		t.Fatalf("status = %d, want %d", response.Code, http.StatusNotFound)
 	}
 }
 
-func newTestHandler() http.Handler {
+func newTestRouter() http.Handler {
 	service := services.NewAgentService(repository.NewMemoryRepository())
 	logger := slog.New(slog.NewTextHandler(io.Discard, &slog.HandlerOptions{Level: slog.LevelInfo}))
-	return NewHandler(service, logger)
+	return NewRouter(service, logger)
 }
 
 func performRequest(t *testing.T, handler http.Handler, method, path, body string) *httptest.ResponseRecorder {

@@ -34,7 +34,7 @@ func main() {
 	agentService := services.NewAgentService(agentRepository)
 	server := &http.Server{
 		Addr:              cfg.HTTPAddress,
-		Handler:           handler.NewHandler(agentService, logger),
+		Handler:           handler.NewRouter(agentService, logger),
 		ReadHeaderTimeout: 5 * time.Second,
 		ReadTimeout:       15 * time.Second,
 		WriteTimeout:      30 * time.Second,
